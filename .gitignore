@@ -1,0 +1,22 @@
+# 依赖
+node_modules/
+__pycache__/
+*.pyc
+
+# 临时文件
+*.log
+*.tmp
+.DS_Store
+
+# 配置文件
+.env
+.env.local
+
+# 上传目录
+/uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
