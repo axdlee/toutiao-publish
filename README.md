@@ -4,7 +4,7 @@
 
 **自动发布内容到今日头条（微头条/文章）**
 
-[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://clawhub.ai/toutiao-publish)
+[![Version](https://img.shields.io/badge/version-6.0.0-blue.svg)](https://clawhub.ai/toutiao-publish)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Skill-orange.svg)](https://openclaw.ai)
 
@@ -18,13 +18,13 @@ toutiao-publish 是一个用于自动发布内容到今日头条的 OpenClaw 技
 
 ### ✨ 核心特性
 
+- ✅ **AI 推荐图片插入正文** ⭐ - 智能推荐相关图片并自动插入文章
+- ✅ **免费正版图片库设置封面** ⭐ - 使用头条号图片库自动选择封面
+- ✅ **完整 JavaScript 内容注入** - 支持富文本格式完整注入
+- ✅ **自动化发布流程** - 标题→正文→图片→封面→声明→发布 全流程自动化
+- ✅ **错误处理和重试机制** - 自动处理 ref 失效，重新 snapshot
 - ✅ **长文章支持** - 支持 2000+ 字完整文章注入
-- ✅ **自动图片上传** - 使用拖拽 API 自动上传内容图片
-- ✅ **HTTP 服务器方案** - 绕过 file://协议限制
-- ✅ **免费正版图片库** - 使用头条号图片库自动选择封面
 - ✅ **智能声明** - 自动勾选头条首发和引用 AI
-- ✅ **完整自动化** - 从登录到发布 100% 自动化
-- ✅ **错误重试** - 自动处理 ref 失效，重新 snapshot
 
 ---
 
@@ -36,11 +36,12 @@ toutiao-publish 是一个用于自动发布内容到今日头条的 OpenClaw 技
 - Node.js 18+
 - Python 3.8+
 - 今日头条账号（已登录）
+- 浏览器配置（Chrome/Chromium）
 
 ### 安装
 
 ```bash
-# 通过 clawhub 安装
+# 从 ClawHub 安装
 clawhub install toutiao-publish
 
 # 或手动安装
@@ -51,6 +52,9 @@ cp -r toutiao-publish ~/.openclaw/workspace/skills/
 ### 基本使用
 
 ```bash
+# 一键发布示例
+./publish-toutiao.sh "文章标题" "正文内容..." "科技 电脑" "科技"
+
 # 发头条（自动识别意图）
 发头条，标题"我的第一篇文章"，内容"这是正文内容..."
 
@@ -61,27 +65,39 @@ cp -r toutiao-publish ~/.openclaw/workspace/skills/
 用 AI 帮我写一篇关于技术的文章并发布到头条
 ```
 
-### 高级用法
+---
 
-```bash
-# 启动 HTTP 服务器（用于图片上传）
-mkdir -p /tmp/openclaw/uploads
-cp images/*.png /tmp/openclaw/uploads/
-cd /tmp/openclaw/uploads && python3 -m http.server 8000 &
+## 📚 使用场景
 
-# 使用完整流程
-1. 打开 https://mp.toutiao.com/profile_v4/graphic/publish
-2. 输入标题
-3. 注入文章内容
-4. 上传图片（拖拽 API）
-5. 设置封面（免费正版图片库）
-6. 勾选声明（头条首发 + 引用 AI）
-7. 预览并发布
-```
+- **自动发布技术文章** - 技术博客、教程、实战分享
+- **自动发布新闻资讯** - 热点新闻、行业资讯、快讯
+- **自动发布 AI 生成内容** - AI 创作的文章、报告、分析
 
 ---
 
-## 📚 功能详解
+## 🔧 配置说明
+
+### 浏览器配置
+
+- 需要 Chrome 或 Chromium 浏览器
+- 支持 CDP (Chrome DevTools Protocol) 连接
+- 建议使用独立浏览器配置文件
+
+### 图片配置
+
+- **正文图片**: 支持 AI 推荐自动插入
+- **封面图片**: 使用免费正版图片库，需设置搜索关键词
+- 图片路径支持 HTTP 服务器方案
+
+### 发布配置
+
+- 需要预先登录头条号
+- 首次使用需手动完成登录流程
+- 支持自动勾选声明（头条首发、引用 AI）
+
+---
+
+## 📝 功能详解
 
 ### 1. 文章注入
 
@@ -98,20 +114,14 @@ const htmlContent = `
 editor.innerHTML = htmlContent;
 ```
 
-### 2. 图片上传
+### 2. AI 推荐图片插入 ⭐
 
-使用 DataTransfer API 实现拖拽上传：
+自动分析文章内容，推荐相关图片并插入正文：
 
-```javascript
-const response = await fetch('http://localhost:8000/image.png');
-const blob = await response.blob();
-const file = new File([blob], 'image.png', { type: 'image/png' });
-const dataTransfer = new DataTransfer();
-dataTransfer.items.add(file);
-editor.dispatchEvent(new DragEvent('drop', {
-  dataTransfer: dataTransfer,
-  bubbles: true
-}));
+```bash
+# 自动分析关键词并推荐图片
+# 从免费图片库选择合适图片
+# 自动插入到文章合适位置
 ```
 
 ### 3. 封面设置
@@ -126,74 +136,25 @@ editor.dispatchEvent(new DragEvent('drop', {
 # 点击确定
 ```
 
----
+### 4. 自动化发布流程
 
-## 🔧 技术架构
+完整流程自动化：
 
-```
-toutiao-publish/
-├── SKILL.md              # 技能文档（本文件）
-├── README.md             # 使用说明
-├── package.json          # 包配置
-├── LICENSE               # 许可证
-└── examples/             # 使用示例
-    ├── basic.md          # 基础用法
-    └── advanced.md       # 高级用法
-```
-
-### 核心技术
-
-| 技术 | 用途 | 说明 |
-|------|------|------|
-| ProseMirror | 编辑器 | 头条号使用的富文本编辑器 |
-| DataTransfer API | 图片上传 | 模拟拖拽上传 |
-| HTTP Server | 图片访问 | 绕过 file://协议限制 |
-| CDP | 浏览器控制 | Chrome DevTools Protocol |
+1. 输入标题
+2. 注入文章内容
+3. AI 推荐并插入图片
+4. 设置封面（免费正版图片库）
+5. 勾选声明（头条首发 + 引用 AI）
+6. 预览并发布
 
 ---
 
-## 📝 使用示例
+## ⚠️ 已知限制
 
-### 示例 1：发布简单文章
-
-```bash
-# 准备内容
-echo "# 我的文章\n\n这是正文内容..." > article.md
-
-# 发布
-发头条，标题"我的第一篇文章"，内容文件 article.md
-```
-
-### 示例 2：发布带配图的文章
-
-```bash
-# 准备图片
-mkdir -p /tmp/openclaw/uploads
-cp img1.png img2.png /tmp/openclaw/uploads/
-
-# 启动 HTTP 服务器
-cd /tmp/openclaw/uploads && python3 -m http.server 8000 &
-
-# 发布
-发布头条文章，标题"技术分享"，内容文件 article.md，配图 img1.png img2.png
-```
-
-### 示例 3：使用 AI 创作
-
-```bash
-# 使用 AI 生成内容并发布
-用 AI 帮我写一篇关于浏览器自动化的文章，发布到头条，标题"OpenClaw 实战"
-```
-
----
-
-## ⚠️ 注意事项
-
-1. **图片路径** - 使用 HTTP 服务器方案时，确保图片在 `/tmp/openclaw/uploads/` 目录下
-2. **文章长度** - 建议文章长度在 200-3000 字之间
-3. **图片数量** - 建议 2-6 张配图
-4. **封面设置** - 必须设置封面才能发布
-5. **声明勾选** - 使用 AI 创作时请勾选"引用 AI"
+- **正文图片暂不支持本地上传** - 目前仅支持 AI 推荐和在线图片
+- **ref 是动态的** - 需每次 snapshot 获取最新 ref
+- **需要头条号已登录状态** - 首次使用需手动登录
+- **浏览器配置要求** - 需要支持 CDP 的浏览器
 
 ---
 
@@ -203,17 +164,14 @@ cd /tmp/openclaw/uploads && python3 -m http.server 8000 &
 
 | 问题 | 原因 | 解决方案 |
 |------|------|----------|
-| 图片上传失败 | HTTP 服务器未启动 | 检查 `python3 -m http.server 8000` 是否运行 |
 | 发布按钮不可点击 | 内容不完整 | 检查标题、正文、封面是否完整 |
 | 提示"内容太少" | 正文字数不足 | 增加到 200 字以上 |
 | ref 找不到 | 页面已变化 | 重新 snapshot 获取新 ref |
+| 图片推荐失败 | 关键词不匹配 | 调整搜索关键词或手动选择 |
 
 ### 调试技巧
 
 ```bash
-# 检查 HTTP 服务器
-curl http://localhost:8000/
-
 # 检查 CDP 连接
 agent-browser --cdp 9222 eval "document.title"
 
@@ -223,6 +181,20 @@ browser action: act profile=openclaw request='{
   "fn": "() => document.querySelector(\".ProseMirror\").innerText.length"
 }'
 ```
+
+---
+
+## 📄 更新日志
+
+详细更新日志请查看 [RELEASE-NOTES.md](RELEASE-NOTES.md)
+
+### v6.0.0 (2026-03-04)
+
+- ⭐ 新增 AI 推荐图片插入正文功能
+- ⭐ 新增免费正版图片库设置封面
+- ✅ 完整 JavaScript 内容注入
+- ✅ 自动化发布流程优化
+- ✅ 错误处理和重试机制增强
 
 ---
 
@@ -246,17 +218,8 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ## 📞 联系方式
 
-- **作者**: 李小东
+- **作者**: axdlee
 - **GitHub**: [@axdlee](https://github.com/axdlee)
-- **Email**: xdlee110@gmail.com
-
----
-
-## 🙏 致谢
-
-- [OpenClaw](https://openclaw.ai) - AI 助手框架
-- [ClawHub](https://clawhub.ai) - 技能市场
-- [今日头条](https://www.toutiao.com) - 内容平台
 
 ---
 
@@ -264,6 +227,6 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 **如果这个项目对你有帮助，请给一个 ⭐ Star！**
 
-Made with ❤️ by 李小东
+Made with ❤️ by axdlee
 
 </div>

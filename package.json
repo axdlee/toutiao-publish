@@ -1,52 +1,27 @@
 {
   "name": "toutiao-publish",
-  "version": "4.0.0",
-  "description": "自动发布内容到今日头条（微头条/文章）- 支持长文章、图片上传、封面设置、完整自动化流程",
-  "author": "李小东 <xdlee110@gmail.com>",
+  "version": "6.0.0",
+  "description": "今日头条自动发布技能 - 支持 AI 推荐图片、免费正版图片库封面、完整自动化流程",
+  "author": "axdlee (https://github.com/axdlee)",
   "license": "MIT",
   "keywords": [
-    "openclaw",
-    "skill",
     "toutiao",
-    "头条",
-    "今日头条",
+    "头条号",
     "自动发布",
-    "浏览器自动化",
-    "内容创作"
+    "AI 创作助手",
+    "browser-automation",
+    "openclaw-skill"
   ],
+  "scripts": {
+    "publish": "./publish-toutiao.sh",
+    "test": "./test-publish.sh"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/axdlee/toutiao-publish.git"
   },
-  "homepage": "https://clawhub.ai/toutiao-publish",
+  "homepage": "https://github.com/axdlee/toutiao-publish#readme",
   "bugs": {
     "url": "https://github.com/axdlee/toutiao-publish/issues"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "python": ">=3.8.0"
-  },
-  "requirements": [
-    "agent-browser",
-    "python3"
-  ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "clawhub": {
-    "category": "content",
-    "tags": [
-      "头条",
-      "自动发布",
-      "内容创作",
-      "浏览器自动化"
-    ],
-    "platform": [
-      "macOS",
-      "Linux",
-      "Windows"
-    ],
-    "difficulty": "intermediate",
-    "estimatedTime": "5-10 minutes"
   }
 }
