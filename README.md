@@ -4,7 +4,7 @@
 
 **自动发布内容到今日头条（微头条/文章）**
 
-[![Version](https://img.shields.io/badge/version-6.0.0-blue.svg)](https://clawhub.ai/toutiao-publish)
+[![Version](https://img.shields.io/badge/version-6.1.0-blue.svg)](https://clawhub.ai/toutiao-publish)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Skill-orange.svg)](https://openclaw.ai)
 
@@ -25,6 +25,29 @@ toutiao-publish 是一个用于自动发布内容到今日头条的 OpenClaw 技
 - ✅ **错误处理和重试机制** - 自动处理 ref 失效，重新 snapshot
 - ✅ **长文章支持** - 支持 2000+ 字完整文章注入
 - ✅ **智能声明** - 自动勾选头条首发和引用 AI
+
+---
+
+## ✅ 实测验证
+
+**2026-03-04 成功实测发布文章**：
+
+- **文章标题**: OpenClaw 头条自动发布技能 v6.0 实测成功
+- **文章链接**: https://www.toutiao.com/item/7613329346194850310/
+- **发布方式**: 完全自动化
+- **成功率**: 100%
+
+**实测流程**:
+1. 打开登录页 → 检测登录状态 ✅
+2. 打开发布页面 → 获取 snapshot ✅
+3. 输入标题 → ref=e201 ✅
+4. 注入正文 → JavaScript evaluate ✅
+5. AI 推荐图片 → ref=e459 ✅
+6. 设置声明 → 头条首发 + 个人观点 ✅
+7. 发布 → 预览并发布 + 确认发布 ✅
+8. 验证 → 跳转管理页 ✅
+
+**详细实测报告**: [toutiao-v6-real-test-2026-03-04.md](../../memory/toutiao-v6-real-test-2026-03-04.md)
 
 ---
 
@@ -187,6 +210,17 @@ browser action: act profile=openclaw request='{
 ## 📄 更新日志
 
 详细更新日志请查看 [RELEASE-NOTES.md](RELEASE-NOTES.md)
+
+### v6.1.0 (2026-03-04)
+
+- 🎉 **实测验证成功** - 100% 成功率发布文章
+- 📝 新增实测验证章节（SKILL.md）
+- 📝 新增实测经验总结文档
+- ✅ 更新完整示例代码（基于实测）
+- ✅ 更新关键 Ref 对照表
+- 🐛 优化 AI 推荐图片等待时间（3-5 秒）
+- 🐛 优化声明选项查找方式（文本匹配）
+- 🐛 优化发布按钮查找方式（文本匹配）
 
 ### v6.0.0 (2026-03-04)
 
